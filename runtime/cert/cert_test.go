@@ -79,7 +79,7 @@ func TestCert_TlsConfigMissingKey(t *testing.T) {
 		},
 	}
 	tlsConfig, err := TlsConfigFromSecret(secret)
-	require.EqualError(t, err, "client certificate found, but no key")
+	require.EqualError(t, err, "found one of certFile or keyFile, and expected both or neither")
 	require.Nil(t, tlsConfig)
 }
 
@@ -91,7 +91,7 @@ func TestCert_TlsConfigMissingCert(t *testing.T) {
 		},
 	}
 	tlsConfig, err := TlsConfigFromSecret(secret)
-	require.EqualError(t, err, "client key found, but no certificate")
+	require.EqualError(t, err, "found one of certFile or keyFile, and expected both or neither")
 	require.Nil(t, tlsConfig)
 }
 

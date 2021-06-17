@@ -20,6 +20,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
+	"fmt"
 	"net/http"
 
 	corev1 "k8s.io/api/core/v1"
@@ -41,11 +42,8 @@ func TlsConfigFromSecret(certSecret *corev1.Secret) (*tls.Config, error) {
 
 	clientCert, clientCertOk := certSecret.Data[ClientCert]
 	clientKey, clientKeyOk := certSecret.Data[ClientKey]
-	if clientCertOk && !clientKeyOk {
-		return nil, errors.New("client certificate found, but no key")
-	}
-	if !clientCertOk && clientKeyOk {
-		return nil, errors.New("client key found, but no certificate")
+	if clientKeyOk != clientCertOk {
+		return nil, fmt.Errorf("found one of %s or %s, and expected both or neither", ClientCert, ClientKey)
 	}
 	if clientCertOk && clientKeyOk {
 		validSecret = true
