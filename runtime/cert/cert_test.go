@@ -27,9 +27,9 @@ import (
 func TestCert_TlsConfigAll(t *testing.T) {
 	secret := &corev1.Secret{
 		Data: map[string][]byte{
-			CACert:     ExampleCA,
-			ClientCert: ExampleCert,
-			ClientKey:  ExampleKey,
+			CACertIdentifier:     ExampleCA,
+			ClientCertIdentifier: ExampleCert,
+			ClientKeyIdentifier:  ExampleKey,
 		},
 	}
 	tlsConfig, err := TlsConfigFromSecret(secret)
@@ -51,7 +51,7 @@ func TestCert_TlsConfigNone(t *testing.T) {
 func TestCert_TlsConfigOnlyCa(t *testing.T) {
 	secret := &corev1.Secret{
 		Data: map[string][]byte{
-			CACert: ExampleCA,
+			CACertIdentifier: ExampleCA,
 		},
 	}
 	tlsConfig, err := TlsConfigFromSecret(secret)
@@ -62,8 +62,8 @@ func TestCert_TlsConfigOnlyCa(t *testing.T) {
 func TestCert_TlsConfigOnlyClient(t *testing.T) {
 	secret := &corev1.Secret{
 		Data: map[string][]byte{
-			ClientCert: ExampleCert,
-			ClientKey:  ExampleKey,
+			ClientCertIdentifier: ExampleCert,
+			ClientKeyIdentifier:  ExampleKey,
 		},
 	}
 	tlsConfig, err := TlsConfigFromSecret(secret)
@@ -74,8 +74,8 @@ func TestCert_TlsConfigOnlyClient(t *testing.T) {
 func TestCert_TlsConfigMissingKey(t *testing.T) {
 	secret := &corev1.Secret{
 		Data: map[string][]byte{
-			CACert:     ExampleCA,
-			ClientCert: ExampleCert,
+			CACertIdentifier:     ExampleCA,
+			ClientCertIdentifier: ExampleCert,
 		},
 	}
 	tlsConfig, err := TlsConfigFromSecret(secret)
@@ -86,8 +86,8 @@ func TestCert_TlsConfigMissingKey(t *testing.T) {
 func TestCert_TlsConfigMissingCert(t *testing.T) {
 	secret := &corev1.Secret{
 		Data: map[string][]byte{
-			CACert:    ExampleCA,
-			ClientKey: ExampleKey,
+			CACertIdentifier:    ExampleCA,
+			ClientKeyIdentifier: ExampleKey,
 		},
 	}
 	tlsConfig, err := TlsConfigFromSecret(secret)
@@ -98,9 +98,9 @@ func TestCert_TlsConfigMissingCert(t *testing.T) {
 func TestCert_Transport(t *testing.T) {
 	secret := &corev1.Secret{
 		Data: map[string][]byte{
-			CACert:     ExampleCA,
-			ClientCert: ExampleCert,
-			ClientKey:  ExampleKey,
+			CACertIdentifier:     ExampleCA,
+			ClientCertIdentifier: ExampleCert,
+			ClientKeyIdentifier:  ExampleKey,
 		},
 	}
 	transport, err := TransportFromSecret(secret)

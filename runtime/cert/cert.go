@@ -27,9 +27,9 @@ import (
 )
 
 const (
-	ClientCert = "certFile"
-	ClientKey  = "keyFile"
-	CACert     = "caFile"
+	ClientCertIdentifier = "certFile"
+	ClientKeyIdentifier  = "keyFile"
+	CACertIdentifier     = "caFile"
 )
 
 // TlsConfigFromSecret returns a tls config created from the content of the secret.
@@ -40,10 +40,10 @@ func TlsConfigFromSecret(certSecret *corev1.Secret) (*tls.Config, error) {
 	validSecret := false
 	tlsConfig := &tls.Config{}
 
-	clientCert, clientCertOk := certSecret.Data[ClientCert]
-	clientKey, clientKeyOk := certSecret.Data[ClientKey]
+	clientCert, clientCertOk := certSecret.Data[ClientCertIdentifier]
+	clientKey, clientKeyOk := certSecret.Data[ClientKeyIdentifier]
 	if clientKeyOk != clientCertOk {
-		return nil, fmt.Errorf("found one of %s or %s, and expected both or neither", ClientCert, ClientKey)
+		return nil, fmt.Errorf("found one of %s or %s, and expected both or neither", ClientCertIdentifier, ClientKeyIdentifier)
 	}
 	if clientCertOk && clientKeyOk {
 		validSecret = true
@@ -54,7 +54,7 @@ func TlsConfigFromSecret(certSecret *corev1.Secret) (*tls.Config, error) {
 		tlsConfig.Certificates = append(tlsConfig.Certificates, cert)
 	}
 
-	if caCert, ok := certSecret.Data[CACert]; ok {
+	if caCert, ok := certSecret.Data[CACertIdentifier]; ok {
 		validSecret = true
 		syscerts, err := x509.SystemCertPool()
 		if err != nil {
